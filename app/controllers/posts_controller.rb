@@ -3,65 +3,35 @@ class PostsController < ApplicationController
 
   def index
     @posts = Post.all
-    respond_to do |format|
-      format.json @posts, status: :ok
-    end
+    render json: @posts, status: :ok
+  rescue => e
+    render json: {error: e.message}, status: :unprocessable_entity
   end
 
   def create
-    @post.new(post_params)
+    @post = Post.new(post_params)
 
-    if @post.save
-      respond_to do |format|
-        format.json @post, status: :created
-      end
-    else
-      respond_to do |format|
-        format.json @post.errors, status: :unprocessable_entity
-      end
-    end
+    render json: @post, status: :created if @post.save
+  rescue => e
+    render json: {error: e.message}, status: :unprocessable_entity
   end
 
   def show
-    @post = Post.find(params[:id])
-
-    if @post
-      respond_to do |format|
-        format.json @post, status: :ok
-      end
-    else
-      respond_to do |format|
-        format.json @post, status: :not_found
-      end
-    end
+    render json: @post, status: :ok if @post
+  rescue => e
+    rrender json: {error: e.message}, status: :unprocessable_entity
   end
 
   def update
-    @post = Post.find(params[:id])
-
-    if @post.update
-      respond_to do |format|
-        format.json @post, status: :ok
-      end
-    else
-      respond_to do |format|
-        format.json @post, status: :unprocessable_entity
-      end
-    end
+    render json: @post, status: :ok if @post.update
+  rescue => e
+    render json: {error: e.message}, status: :unprocessable_entity
   end
 
   def delete
-    @post = Post.find(params[:id])
-
-    if @post.delete
-      respond_to do |format|
-        format.json "Record deleted successfully", status: :ok
-      end
-    else
-      respond_to do |format|
-        format.json @post.errors, status: :unprocesable_entity
-      end
-    end
+    render json: "Record deleted successfully", status: :ok if @post.delete
+  rescue => e
+    render json: {error: e.message}, status: :unprocessable_entity
   end
 
   private
@@ -71,6 +41,6 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.permit(:post).require(:title, :description, :body, category_ids: [], tags_ids: [])
+    params.require(:post).permit(:title, :description, :body, category_ids: [], tag_ids: [])
   end
 end
