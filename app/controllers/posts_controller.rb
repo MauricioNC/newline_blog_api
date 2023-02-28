@@ -3,35 +3,31 @@ class PostsController < ApplicationController
 
   def index
     @posts = Post.all
-    render json: @posts, status: :ok
-  rescue => e
-    render json: {error: e.message}, status: :unprocessable_entity
+
+    render json: @posts, status: :ok if @posts
+    rrender json: @posts.errors.full_messages, status: :unprocessable_entity
   end
 
   def create
     @post = Post.new(post_params)
 
     render json: @post, status: :created if @post.save
-  rescue => e
-    render json: {error: e.message}, status: :unprocessable_entity
+    render json: @post.errors.full_messages, status: :unprocessable_entity
   end
 
   def show
     render json: @post, status: :ok if @post
-  rescue => e
-    rrender json: {error: e.message}, status: :unprocessable_entity
+    rrender json: @post.errors.full_messages, status: :unprocessable_entity
   end
 
   def update
     render json: @post, status: :ok if @post.update
-  rescue => e
-    render json: {error: e.message}, status: :unprocessable_entity
+    rrender json: @post.errors.full_messages, status: :unprocessable_entity
   end
 
   def delete
     render json: "Record deleted successfully", status: :ok if @post.delete
-  rescue => e
-    render json: {error: e.message}, status: :unprocessable_entity
+    rrender json: @post.errors.full_messages, status: :unprocessable_entity
   end
 
   private

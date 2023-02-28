@@ -3,41 +3,31 @@ class CategoriesController < ApplicationController
 
   def index
     @categories = Category.all
-    render json: @categories, status: :ok
+
+    render json: @categories, status: :ok if @categories
+    render json: @categories.errors.full_messages, status: :unprocessable_entity
   end
 
   def create
     @category = Category.new(category_params)
 
-    if @category.save
-      render json: @category, status: :created
-    else
-      render json: @category.errors, status: :unprocessable_entity
-    end
-  end
+    render json: @category, status: :created if @category.save
+    render json: @category.errors.full_messages, status: :unprocessable_entity
+   end
 
   def show
-    if @category
-      render json: @category, status: :ok
-    else
-      render json: @category, status: :not_found
-    end
+    render json: @category, status: :ok if @category
+    render json: @category.errors.full_messages, status: :not_found
   end
 
   def update
-    if @category.update
-      render json: @category, status: :ok
-    else
-      render json: @category, status: :unprocessable_entity
-    end
+    render json: @category, status: :ok if @category.update
+    render json: @category.errors.full_messages, status: :unprocessable_entity
   end
 
   def delete
-    if @category.delete
-      render json: "Record deleted successfully", status: :ok
-    else
-      render json: @category.errors, status: :unprocesable_entity
-    end
+    render json: "Record deleted successfully", status: :ok if @category.delete
+    render json: @category.errors.full_messages, status: :unprocessable_entity
   end
 
   private
