@@ -30,7 +30,7 @@ class PostsController < ApplicationController
   end
 
   def update
-    if @post.update
+    if @post.update(post_params)
       render json: @post, status: :ok
       return
     end

@@ -30,7 +30,7 @@ class TagsController < ApplicationController
   end
 
   def update
-    if @tag.update
+    if @tag.update(tag_params)
       render json: @tag, status: :ok
       return
     end

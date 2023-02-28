@@ -30,7 +30,7 @@ class CategoriesController < ApplicationController
   end
 
   def update
-    if @category.update
+    if @category.update(category_params)
       render json: @category, status: :ok
       return
     end
