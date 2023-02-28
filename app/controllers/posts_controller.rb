@@ -4,29 +4,44 @@ class PostsController < ApplicationController
   def index
     @posts = Post.all
 
-    render json: @posts, status: :ok if @posts
+    if @posts
+      render json: @posts, status: :ok
+      return
+    end
     rrender json: @posts.errors.full_messages, status: :unprocessable_entity
   end
 
   def create
     @post = Post.new(post_params)
 
-    render json: @post, status: :created if @post.save
+    if @post.save
+      render json: @post, status: :created
+      return
+    end
     render json: @post.errors.full_messages, status: :unprocessable_entity
   end
 
   def show
-    render json: @post, status: :ok if @post
+    if @post
+      render json: @post, status: :ok
+      return
+    end
     rrender json: @post.errors.full_messages, status: :unprocessable_entity
   end
 
   def update
-    render json: @post, status: :ok if @post.update
+    if @post.update
+      render json: @post, status: :ok
+      return
+    end
     rrender json: @post.errors.full_messages, status: :unprocessable_entity
   end
 
   def delete
-    render json: "Record deleted successfully", status: :ok if @post.delete
+    if @post.delete
+      render json: "Record deleted successfully", status: :ok
+      return
+    end
     rrender json: @post.errors.full_messages, status: :unprocessable_entity
   end
 
