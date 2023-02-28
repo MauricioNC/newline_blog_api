@@ -3,29 +3,45 @@ class TagsController < ApplicationController
 
   def index
     @tags = Tag.all
-    render json: @tags, status: :ok if @tags
+
+    if @tags
+      render json: @tags, status: :ok
+      return
+    end
     render json: @tags.errors.full_messages, status: :unprocessable_entity
   end
 
   def create
     @tag = Tag.new(tag_params)
 
-    render json: @tag, status: :created if @tag.save
+    if @tag.save
+      render json: @tag, status: :created
+      return
+    end
     render json: @tag.errors.full_messages, status: :unprocessable_entity
   end
 
   def show
-    render json: @tag, status: :ok if @tag
+    if @tag
+      render json: @tag, status: :ok
+      return
+    end
     render json: @tag.errors.full_messages, status: :not_found
   end
 
   def update
-    render json: @tag, status: :ok if @tag.update
+    if @tag.update
+      render json: @tag, status: :ok
+      return
+    end
     render json: @tag.errors.full_messages, status: :unprocessable_entity
   end
 
   def delete
-    render json: "Record deleted successfully", status: :ok if @tag.delete
+    if @tag.delete
+      render json: "Record deleted successfully", status: :ok
+      return
+    end
     render json: @tag.errors.full_messages, status: :unprocessable_entity
   end
 
