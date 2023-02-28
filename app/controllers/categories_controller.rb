@@ -1,5 +1,5 @@
 class CategoriesController < ApplicationController
-  before_action :set_category, only: %i[show update delete]
+  before_action :set_category, only: %i[show update destroy]
 
   def index
     @categories = Category.all
@@ -37,7 +37,7 @@ class CategoriesController < ApplicationController
     render json: @category.errors.full_messages, status: :unprocessable_entity
   end
 
-  def delete
+  def destroy
     if @category.delete
       render json: "Record deleted successfully", status: :ok
       return

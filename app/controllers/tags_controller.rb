@@ -1,5 +1,5 @@
 class TagsController < ApplicationController
-  before_action :set_tag, only: %i[show update delete]
+  before_action :set_tag, only: %i[show update destroy]
 
   def index
     @tags = Tag.all
@@ -37,7 +37,7 @@ class TagsController < ApplicationController
     render json: @tag.errors.full_messages, status: :unprocessable_entity
   end
 
-  def delete
+  def destroy
     if @tag.delete
       render json: "Record deleted successfully", status: :ok
       return
