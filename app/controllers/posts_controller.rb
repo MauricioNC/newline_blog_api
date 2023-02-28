@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: %i[show update delete]
+  before_action :set_post, only: %i[show update destroy]
 
   def index
     @posts = Post.all
@@ -30,14 +30,14 @@ class PostsController < ApplicationController
   end
 
   def update
-    if @post.update
+    if @post.update(post_params)
       render json: @post, status: :ok
       return
     end
     rrender json: @post.errors.full_messages, status: :unprocessable_entity
   end
 
-  def delete
+  def destroy
     if @post.delete
       render json: "Record deleted successfully", status: :ok
       return
